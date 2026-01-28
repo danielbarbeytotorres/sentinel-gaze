@@ -1,0 +1,11 @@
+# Entorno virtual
+venv/
+
+# Temporales de Python
+__pycache__/
+*.pyc
+
+# Datos locales de seguridad
+security_events.log
+evidencias/
+session_integrity.sha256

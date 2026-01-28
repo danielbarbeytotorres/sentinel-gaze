@@ -1,0 +1,12 @@
+{
+    "settings": {
+        "lock_timeout": 5.0,
+        "eye_tolerance_threshold": 0.06,
+        "distraction_alert_time": 3.0,
+        "real_lock_enabled": true
+    },
+    "paths": {
+        "log_file": "security_events.log",
+        "evidence_dir": "evidencias"
+    }
+}
