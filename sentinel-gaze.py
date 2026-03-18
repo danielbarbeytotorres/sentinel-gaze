@@ -66,7 +66,7 @@ def run_sentinel():
     # VARIABLES
     ts_absence_start = None
     lock_state = False
-    ts_distraction_start = None
+    ts_distraction_start = None # Usaremos siempre esta (con T)
     distraction_state = False
     ts_last_intruder_incident = 0
 
@@ -83,7 +83,6 @@ def run_sentinel():
             ret, frame = video_capture.read()
             if not ret: break
             
-            # --- FORENSICS ---
             raw_frame = frame.copy() 
             rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             analysis = face_mesh.process(rgb_frame)
@@ -125,18 +124,20 @@ def run_sentinel():
                 if eye_y_position > reference_threshold + CONF['settings']['eye_tolerance_threshold']:
                     trigger_alert = True
                     alert_msg = "SYSTEM PROTECTED:\nPLEASE RESUME ATTENTION"
-                    if ts_distraccion_start is None: 
-                        ts_distraccion_start = now
-                    elif now - ts_distraccion_start > CONF['settings']['distraction_alert_time'] and not distraction_state:
+                    
+                    if ts_distraction_start is None: 
+                        ts_distraction_start = now
+                    # Corregido: antes usabas 'distraccion' con C
+                    elif now - ts_distraction_start > CONF['settings']['distraction_alert_time'] and not distraction_state:
                         distraction_state = True
                 else:
                     if distraction_state:
-                        dist_duration = now - ts_distraccion_start
+                        # Corregido: antes usabas 'distraccion' con C
+                        dist_duration = now - ts_distraction_start
                         logging.warning(f"EVENT: Attention loss registered. Duration: {dist_duration:.2f}s")
-                    ts_distraccion_start = None
+                    ts_distraction_start = None
                     distraction_state = False
 
-            # protection interface
             if trigger_alert:
                 ui_text.set(alert_msg)
                 root.deiconify()
@@ -145,10 +146,7 @@ def run_sentinel():
                 root.withdraw()
                 root.update()
             
-            # monitor
             cv2.imshow('Status Monitor', cv2.resize(cv2.flip(frame, 1), (320, 240)))
-            
-            # to terminate the session: press ESC and close the monitor window
             if cv2.waitKey(5) & 0xFF == 27: break
 
     video_capture.release()
