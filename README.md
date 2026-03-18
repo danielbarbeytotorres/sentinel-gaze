@@ -69,5 +69,7 @@ El sistema se basa en una arquitectura modular:
 ## 🔐 Auditoría y Logs
 Todos los eventos se registran en `security_events.log`. Al cerrar el programa (presionando la tecla `ESC`), se generará automáticamente una firma digital SHA-256 mostrada en consola para facilitar la auditoría forense.
 
----
+<img width="1597" height="1085" alt="1" src="https://github.com/user-attachments/assets/70767e6e-289d-42b0-a71f-5702ea01b687" />
+
+
 Desarrollado por [Daniel Barbeyto](https://github.com/danielbarbeytotorres)
